@@ -1,0 +1,351 @@
+# ======================
+# Python
+# ======================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# ======================
+# IDE / Editor Files
+# ======================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Vim
+*.swp
+*.swo
+*~
+*.un~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ======================
+# Project Specific
+# ======================
+
+# History and data files
+history/
+*.history.json
+*.json.history
+
+# Exports and outputs
+exports/
+*.export.json
+*.txt.output
+*.md.output
+
+# Batch processing files
+batch_config.json
+batch_results_*.json
+comparison_*.json
+
+# Logs
+logs/
+*.log
+error.log
+access.log
+debug.log
+
+# Configuration files with secrets
+config/local.json
+config/development.json
+config/production.json
+*.secret.json
+*.key
+*.pem
+*.crt
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.cab
+*.lnk
+
+# ======================
+# Testing & CI/CD
+# ======================
+
+# pytest
+.pytest_cache/
+.tox/
+.tox
+
+# GitHub Actions
+.github/
+
+# GitLab CI
+.gitlab-ci.yml
+
+# Travis CI
+.travis.yml
+
+# Jenkins
+.jenkins/
+
+# CircleCI
+.circleci/
+
+# ======================
+# Deployment
+# ======================
+
+# Docker
+*.pid
+docker-compose.override.yml
+Dockerfile.dev
+
+# Kubernetes
+*.kubeconfig
+kubeconfig.yaml
+
+# Heroku
+.heroku/
+
+# Railway
+.railway/
+
+# Render
+.render/
+
+# PythonAnywhere
+.pythonanywhere
+
+# ======================
+# Backup & Archive
+# ======================
+
+# Backup directories
+backup/
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.iso
+
+# ======================
+# Documentation
+# ======================
+
+# Generated documentation
+docs/_build/
+docs/api/
+site/
+
+# ======================
+# Secrets & Credentials
+# ======================
+
+# API Keys
+*.secret
+secrets.json
+credentials.json
+.credentials
+
+# Private keys
+*.pem
+*.key
+*.priv
+*.id_rsa
+
+# ======================
+# Miscellaneous
+# ======================
+
+# Nginx
+nginx.conf
+*.nginx.conf
+
+# Gunicorn
+gunicorn.conf.py
+
+# Supervisor
+*.conf
+
+# Systemd
+*.service
+
+# Profiling data
+*.prof
+*.lprof
+
+# Memory dumps
+*.core
+*.dmp

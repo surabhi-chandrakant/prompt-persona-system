@@ -1,0 +1,100 @@
+{
+  "personas": {
+    "beginner": {
+      "name": "Beginner Learner",
+      "language_level": "simple",
+      "technical_depth": 0.2,
+      "include_examples": true,
+      "tone": "encouraging",
+      "detail_level": "high",
+      "jargon_level": "minimal",
+      "structure": "step_by_step",
+      "icon": "🌱",
+      "color": "green"
+    },
+    "expert": {
+      "name": "Subject Matter Expert",
+      "language_level": "advanced",
+      "technical_depth": 0.9,
+      "include_examples": false,
+      "tone": "professional",
+      "detail_level": "high",
+      "jargon_level": "full",
+      "structure": "concise",
+      "icon": "🎓",
+      "color": "blue"
+    },
+    "teacher": {
+      "name": "Educator",
+      "language_level": "moderate",
+      "technical_depth": 0.5,
+      "include_examples": true,
+      "tone": "instructional",
+      "detail_level": "high",
+      "jargon_level": "explained",
+      "structure": "lesson_plan",
+      "icon": "📚",
+      "color": "yellow"
+    },
+    "student": {
+      "name": "Curious Student",
+      "language_level": "moderate",
+      "technical_depth": 0.3,
+      "include_examples": true,
+      "tone": "inquisitive",
+      "detail_level": "moderate",
+      "jargon_level": "minimal",
+      "structure": "question_based",
+      "icon": "🧠",
+      "color": "cyan"
+    },
+    "executive": {
+      "name": "Business Executive",
+      "language_level": "business",
+      "technical_depth": 0.1,
+      "include_examples": true,
+      "tone": "professional",
+      "detail_level": "low",
+      "jargon_level": "minimal",
+      "structure": "bullet_points",
+      "icon": "💼",
+      "color": "magenta"
+    },
+    "developer": {
+      "name": "Software Developer",
+      "language_level": "technical",
+      "technical_depth": 0.8,
+      "include_examples": true,
+      "tone": "technical",
+      "detail_level": "high",
+      "jargon_level": "full",
+      "structure": "technical_documentation",
+      "icon": "💻",
+      "color": "blue"
+    },
+    "creative": {
+      "name": "Creative Thinker",
+      "language_level": "descriptive",
+      "technical_depth": 0.3,
+      "include_examples": true,
+      "tone": "inspiring",
+      "detail_level": "moderate",
+      "jargon_level": "minimal",
+      "structure": "narrative",
+      "icon": "🎨",
+      "color": "red"
+    },
+    "analytical": {
+      "name": "Data Analyst",
+      "language_level": "precise",
+      "technical_depth": 0.7,
+      "include_examples": true,
+      "tone": "objective",
+      "detail_level": "high",
+      "jargon_level": "moderate",
+      "structure": "data_driven",
+      "icon": "📊",
+      "color": "white"
+    }
+  }
+}

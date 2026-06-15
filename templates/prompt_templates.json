@@ -1,0 +1,40 @@
+{
+  "templates": {
+    "explanation": {
+      "name": "📖 Explanation",
+      "template": "As a {persona_name}, please explain the following concept:\n\nConcept: {concept}\nContext: {context}\n\nPlease ensure your explanation:\n- Uses {language_level} language\n- Has {technical_depth} level of technical depth\n- {include_examples_text} examples\n- Maintains a {tone} tone\n- Provides {detail_level} level of detail\n- Uses {jargon_level} jargon\n- Follows a {structure} structure\n\nAdditional instructions: {additional_instructions}",
+      "variables": ["concept", "context", "additional_instructions"],
+      "required": ["concept", "context"]
+    },
+    "problem_solving": {
+      "name": "🔧 Problem Solving",
+      "template": "As {persona_name}, help solve this problem:\n\nProblem: {problem}\nConstraints: {constraints}\nExpected Outcome: {outcome}\n\nYour approach should:\n- Reflect {technical_depth} technical depth\n- Include {include_examples_text} examples\n- Use {structure} structure\n- Address the problem from a {tone} perspective\n\nSolution approach:",
+      "variables": ["problem", "constraints", "outcome"],
+      "required": ["problem", "outcome"]
+    },
+    "code_generation": {
+      "name": "💻 Code Generation",
+      "template": "As {persona_name}, write code for:\n\nTask: {task}\nLanguage: {language}\nRequirements: {requirements}\n\nCoding style preferences:\n- {technical_depth} technical depth\n- {detail_level} detail level\n- Follow {structure} structure\n- {jargon_level} jargon usage\n\nPlease provide the code with appropriate comments and explanations:",
+      "variables": ["task", "language", "requirements"],
+      "required": ["task", "language"]
+    },
+    "analysis": {
+      "name": "📈 Analysis",
+      "template": "As {persona_name}, analyze the following:\n\nData/Information: {data}\nAnalysis Goals: {goals}\nConstraints: {constraints}\n\nAnalysis requirements:\n- {technical_depth} depth of analysis\n- {detail_level} level of detail\n- Use {structure} structure\n- {include_examples_text} examples\n- Maintain {tone} tone\n\nAnalysis:",
+      "variables": ["data", "goals", "constraints"],
+      "required": ["data", "goals"]
+    },
+    "creative_writing": {
+      "name": "✍️ Creative Writing",
+      "template": "As {persona_name}, create content for:\n\nTopic: {topic}\nFormat: {format}\nTarget Audience: {audience}\nStyle Requirements: {style_requirements}\n\nCreative constraints:\n- Use {tone} tone\n- {language_level} language level\n- Follow {structure} structure\n- {include_examples_text} examples\n\nCreative content:",
+      "variables": ["topic", "format", "audience", "style_requirements"],
+      "required": ["topic", "format"]
+    },
+    "brainstorming": {
+      "name": "💡 Brainstorming",
+      "template": "As {persona_name}, help brainstorm ideas for:\n\nTopic: {topic}\nGoal: {goal}\nConstraints: {constraints}\n\nYour brainstorming approach should:\n- Generate {quantity} ideas\n- Use {creativity_level} creativity level\n- Consider {perspective} perspectives\n- {include_examples_text} examples\n\nBrainstorming ideas:",
+      "variables": ["topic", "goal", "constraints", "quantity", "creativity_level", "perspective"],
+      "required": ["topic", "goal"]
+    }
+  }
+}

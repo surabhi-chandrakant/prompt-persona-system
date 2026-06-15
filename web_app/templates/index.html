@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Templating System - Persona Adaptation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .required-star {
+            color: red;
+            margin-left: 4px;
+        }
+
+        .field-description {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .prompt-output {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .prompt-text {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .metadata {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .variable-input {
+            animation: fadeIn 0.3s;
+            margin-bottom: 15px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .copy-btn {
+            background: #28a745;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        .enhancements {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f3f5;
+            border-radius: 8px;
+        }
+
+        .enhancements h4 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .error {
+            color: #dc3545;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Prompt Templating System</h1>
+            <p>Adaptive prompts for different user personas</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Configuration Panel -->
+            <div class="panel">
+                <h2>⚙️ Configuration</h2>
+                
+                <div class="info-box">
+                    💡 <strong>How it works:</strong> Select a persona and template, then fill in the variables. 
+                    The system will automatically adapt the language, tone, and detail level based on your persona!
+                </div>
+                
+                <div class="form-group">
+                    <label>👤 Select Persona</label>
+                    <select id="personaSelect"></select>
+                    <div class="field-description">Different personas get different language styles and detail levels</div>
+                </div>
+
+                <div class="form-group">
+                    <label>📝 Select Template</label>
+                    <select id="templateSelect"></select>
+                    <div class="field-description" id="templateDescription"></div>
+                </div>
+
+                <div id="variablesContainer"></div>
+
+                <div class="enhancements">
+                    <h4>✨ Context Enhancements</h4>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="timestampCheck">
+                        <label>Add Timestamp</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Urgency Level</label>
+                        <select id="urgencySelect">
+                            <option value="">None</option>
+                            <option value="low">Low - Flexible timing</option>
+                            <option value="normal">Normal - Timely manner</option>
+                            <option value="high">High - Immediate attention</option>
+                            <option value="critical">Critical - Urgent action</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quality Requirements (comma-separated)</label>
+                        <input type="text" id="qualityRequirements" placeholder="e.g., Error handling, Documentation, Testing">
+                        <div class="field-description">Add specific quality expectations to your prompt</div>
+                    </div>
+                </div>
+
+                <button onclick="generatePrompt()">🚀 Generate Prompt</button>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="panel">
+                <h2>📄 Generated Prompt</h2>
+                <div id="promptOutput" class="prompt-output">
+                    <p style="color: #999;">Your generated prompt will appear here...</p>
+                </div>
+                <button class="copy-btn" onclick="copyPrompt()">📋 Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPrompt = '';
+        let currentTemplateData = null;
+
+        // Load personas
+        async function loadPersonas() {
+            try {
+                const response = await fetch('/api/personas');
+                const personas = await response.json();
+                const select = document.getElementById('personaSelect');
+                select.innerHTML = '';
+                personas.forEach(persona => {
+                    const option = document.createElement('option');
+                    option.value = persona.id;
+                    option.textContent = `${persona.icon} ${persona.name}`;
+                    option.title = persona.description;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading personas:', error);
+            }
+        }
+
+        // Load templates
+        async function loadTemplates() {
+            try {
+                const response = await fetch('/api/templates');
+                const templates = await response.json();
+                const select = document.getElementById('templateSelect');
+                select.innerHTML = '';
+                templates.forEach(template => {
+                    const option = document.createElement('option');
+                    option.value = template.id;
+                    option.textContent = template.name;
+                    option.dataset.required = JSON.stringify(template.required_variables);
+                    option.dataset.allVars = JSON.stringify(template.all_variables);
+                    option.dataset.description = template.description;
+                    select.appendChild(option);
+                });
+                updateVariables();
+            } catch (error) {
+                console.error('Error loading templates:', error);
+            }
+        }
+
+        // Update variable inputs based on selected template
+        function updateVariables() {
+            const select = document.getElementById('templateSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            if (!selectedOption) return;
+            
+            const requiredVars = JSON.parse(selectedOption.dataset.required || '[]');
+            const allVars = JSON.parse(selectedOption.dataset.allVars || '[]');
+            const description = selectedOption.dataset.description || '';
+            
+            // Update description
+            document.getElementById('templateDescription').textContent = description;
+            
+            const container = document.getElementById('variablesContainer');
+            container.innerHTML = '<h3 style="margin-bottom: 15px;">📝 Variables</h3>';
+            
+            if (allVars.length === 0) {
+                container.innerHTML += '<p style="color: #999;">No variables required for this template.</p>';
+            } else {
+                // Provide example values for each variable type
+                const examples = {
+                    'concept': 'e.g., Machine Learning, Python, Cloud Computing',
+                    'context': 'e.g., First-time learner, Advanced developer, Business context',
+                    'additional_instructions': 'e.g., Focus on practical examples, Include diagrams',
+                    'problem': 'e.g., Calculate the sum of two numbers',
+                    'constraints': 'e.g., Must handle negative numbers, No external libraries',
+                    'outcome': 'e.g., Return the correct result with error handling',
+                    'task': 'e.g., Create a function to validate email addresses',
+                    'language': 'e.g., Python, JavaScript, Java',
+                    'requirements': 'e.g., Include error handling, Add comments',
+                    'data': 'e.g., Sales data for Q1 2024, User feedback comments',
+                    'goals': 'e.g., Identify trends, Find anomalies',
+                    'topic': 'e.g., Climate change, Remote work, AI ethics',
+                    'format': 'e.g., Blog post, Report, Presentation',
+                    'audience': 'e.g., General public, Technical team, Executives',
+                    'style_requirements': 'e.g., Professional, Friendly, Technical'
+                };
+                
+                allVars.forEach(varName => {
+                    const isRequired = requiredVars.includes(varName);
+                    const div = document.createElement('div');
+                    div.className = 'form-group variable-input';
+                    
+                    let exampleText = examples[varName] || `e.g., Enter ${varName.replace('_', ' ')}`;
+                    
+                    div.innerHTML = `
+                        <label>
+                            ${formatVariableName(varName)}
+                            ${isRequired ? '<span class="required-star">*</span>' : ''}
+                        </label>
+                        <${varName.includes('instructions') || varName === 'requirements' ? 'textarea' : 'input'} 
+                            type="text" 
+                            id="var_${varName}" 
+                            placeholder="${exampleText}"
+                            ${isRequired ? 'required' : ''}>
+                        </${varName.includes('instructions') || varName === 'requirements' ? 'textarea' : 'input'}>
+                        <div class="field-description">${getFieldDescription(varName)}</div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+        }
+        
+        function getFieldDescription(varName) {
+            const descriptions = {
+                'concept': 'What topic or idea do you want explained?',
+                'context': 'Who is the audience? What\'s the situation?',
+                'additional_instructions': 'Any special requirements or focus areas?',
+                'problem': 'Describe the problem that needs solving',
+                'constraints': 'Any limitations or requirements? (budget, time, resources)',
+                'outcome': 'What should the final result look like?',
+                'task': 'What specific task needs to be accomplished?',
+                'language': 'Which programming language should be used?',
+                'requirements': 'Any special coding requirements?',
+                'data': 'What data needs to be analyzed?',
+                'goals': 'What insights are you looking for?',
+                'topic': 'What subject should the content cover?',
+                'format': 'What format should the output take?',
+                'audience': 'Who will be reading this?',
+                'style_requirements': 'Any specific style preferences?'
+            };
+            return descriptions[varName] || 'Required field for this template';
+        }
+
+        function formatVariableName(name) {
+            return name.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        // Generate prompt
+        async function generatePrompt() {
+            const persona = document.getElementById('personaSelect').value;
+            const template = document.getElementById('templateSelect').value;
+            
+            if (!persona || !template) {
+                alert('Please select both a persona and a template');
+                return;
+            }
+            
+            // Collect variables from ALL variable inputs
+            const variables = {};
+            const varInputs = document.querySelectorAll('[id^="var_"]');
+            let hasError = false;
+            let missingFields = [];
+            
+            // Get required variables from selected template
+            const select = document.getElementById('templateSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            const requiredVars = JSON.parse(selectedOption.dataset.required || '[]');
+            
+            varInputs.forEach(input => {
+                const varName = input.id.replace('var_', '');
+                const value = input.value.trim();
+                
+                if (requiredVars.includes(varName) && !value) {
+                    hasError = true;
+                    missingFields.push(formatVariableName(varName));
+                    input.style.borderColor = 'red';
+                } else {
+                    input.style.borderColor = '#e0e0e0';
+                    if (value) {
+                        variables[varName] = value;
+                    }
+                }
+            });
+            
+            if (hasError) {
+                alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+                return;
+            }
+            
+            // Check if any variables were entered at all
+            if (Object.keys(variables).length === 0 && varInputs.length > 0) {
+                alert('Please enter at least one value for the variables');
+                return;
+            }
+            
+            // Collect enhancements
+            const enhancements = {};
+            if (document.getElementById('timestampCheck').checked) {
+                enhancements.timestamp = true;
+            }
+            const urgency = document.getElementById('urgencySelect').value;
+            if (urgency) {
+                enhancements.urgency = urgency;
+            }
+            const qualityReqs = document.getElementById('qualityRequirements').value;
+            if (qualityReqs) {
+                enhancements.quality_requirements = qualityReqs.split(',').map(r => r.trim()).filter(r => r);
+            }
+            
+            // Show loading state
+            const outputDiv = document.getElementById('promptOutput');
+            outputDiv.innerHTML = '<div class="loading">⏳ Generating prompt...</div>';
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        persona: persona,
+                        template: template,
+                        variables: variables,
+                        enhancements: Object.keys(enhancements).length ? enhancements : null
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentPrompt = result.prompt;
+                    displayPrompt(result);
+                } else {
+                    outputDiv.innerHTML = `<div class="error">❌ Error: ${result.error}</div>`;
+                }
+            } catch (error) {
+                outputDiv.innerHTML = `<div class="error">❌ Network error: ${error.message}</div>`;
+            }
+        }
+        
+        function displayPrompt(result) {
+            const outputDiv = document.getElementById('promptOutput');
+            outputDiv.innerHTML = `
+                <div class="prompt-text">${escapeHtml(result.prompt)}</div>
+                <div class="metadata">
+                    <strong>${result.metadata.persona_icon} ${result.metadata.persona}</strong> | 
+                    Template: ${result.metadata.template} | 
+                    Generated: ${new Date(result.metadata.timestamp).toLocaleString()}
+                </div>
+            `;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            let html = div.innerHTML;
+            html = html.replace(/\n/g, '<br>');
+            html = html.replace(/  /g, ' &nbsp;');
+            return html;
+        }
+        
+        function copyPrompt() {
+            if (currentPrompt) {
+                navigator.clipboard.writeText(currentPrompt).then(() => {
+                    // Show temporary success message
+                    const copyBtn = document.querySelector('.copy-btn');
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = '✅ Copied!';
+                    copyBtn.style.background = '#28a745';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.background = '#28a745';
+                    }, 2000);
+                }).catch(() => {
+                    alert('Failed to copy. Select and copy manually.');
+                });
+            } else {
+                alert('No prompt to copy! Generate a prompt first.');
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('templateSelect').addEventListener('change', updateVariables);
+        
+        // Initialize
+        loadPersonas();
+        loadTemplates();
+    </script>
+</body>
+</html>
