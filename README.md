@@ -1,8 +1,4 @@
-I cannot access your GitHub repository to see its current content, as the link you provided falls outside my browsing scope. However, I can provide you with a complete, detailed README.md file that you can copy and paste directly into your repository.
 
-Here is a professional, comprehensive README for your **prompt-persona-system**:
-
-```markdown
 # 🎭 Prompt Persona System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
