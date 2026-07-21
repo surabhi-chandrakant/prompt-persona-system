@@ -75,6 +75,12 @@
             margin-left: 4px;
         }
 
+        .optional-label {
+            color: #6c757d;
+            font-weight: normal;
+            font-size: 0.9em;
+        }
+
         .field-description {
             font-size: 12px;
             color: #6c757d;
@@ -221,6 +227,17 @@
             border-radius: 4px;
         }
 
+        .optional-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #dee2e6;
+        }
+
+        .optional-section h4 {
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -332,6 +349,8 @@
                     option.textContent = template.name;
                     option.dataset.required = JSON.stringify(template.required_variables);
                     option.dataset.allVars = JSON.stringify(template.all_variables);
+                    option.dataset.optionalVars = JSON.stringify(template.optional_variables);
+                    option.dataset.defaults = JSON.stringify(template.defaults);
                     option.dataset.description = template.description;
                     select.appendChild(option);
                 });
@@ -349,6 +368,8 @@
             
             const requiredVars = JSON.parse(selectedOption.dataset.required || '[]');
             const allVars = JSON.parse(selectedOption.dataset.allVars || '[]');
+            const optionalVars = JSON.parse(selectedOption.dataset.optionalVars || '[]');
+            const defaults = JSON.parse(selectedOption.dataset.defaults || '{}');
             const description = selectedOption.dataset.description || '';
             
             // Update description
@@ -360,7 +381,7 @@
             if (allVars.length === 0) {
                 container.innerHTML += '<p style="color: #999;">No variables required for this template.</p>';
             } else {
-                // Provide example values for each variable type
+                // Define examples
                 const examples = {
                     'concept': 'e.g., Machine Learning, Python, Cloud Computing',
                     'context': 'e.g., First-time learner, Advanced developer, Business context',
@@ -376,41 +397,64 @@
                     'topic': 'e.g., Climate change, Remote work, AI ethics',
                     'format': 'e.g., Blog post, Report, Presentation',
                     'audience': 'e.g., General public, Technical team, Executives',
-                    'style_requirements': 'e.g., Professional, Friendly, Technical'
+                    'style_requirements': 'e.g., Professional, Friendly, Technical',
+                    'quantity': 'e.g., 10, 20, 50 (Default: 10)',
+                    'creativity_level': 'e.g., low, moderate, high (Default: moderate)',
+                    'perspective': 'e.g., technical, business, user (Default: multiple)'
                 };
                 
-                allVars.forEach(varName => {
-                    const isRequired = requiredVars.includes(varName);
-                    const div = document.createElement('div');
-                    div.className = 'form-group variable-input';
-                    
-                    let exampleText = examples[varName] || `e.g., Enter ${varName.replace('_', ' ')}`;
-                    
-                    div.innerHTML = `
-                        <label>
-                            ${formatVariableName(varName)}
-                            ${isRequired ? '<span class="required-star">*</span>' : ''}
-                        </label>
-                        <${varName.includes('instructions') || varName === 'requirements' ? 'textarea' : 'input'} 
-                            type="text" 
-                            id="var_${varName}" 
-                            placeholder="${exampleText}"
-                            ${isRequired ? 'required' : ''}>
-                        </${varName.includes('instructions') || varName === 'requirements' ? 'textarea' : 'input'}>
-                        <div class="field-description">${getFieldDescription(varName)}</div>
-                    `;
-                    container.appendChild(div);
+                // Show required fields
+                requiredVars.forEach(varName => {
+                    addVariableField(varName, true, examples, defaults);
                 });
+                
+                // Show optional fields
+                if (optionalVars.length > 0) {
+                    const optHeader = document.createElement('div');
+                    optHeader.className = 'optional-section';
+                    optHeader.innerHTML = '<h4>✨ Optional Fields</h4><p style="color: #6c757d; font-size: 13px; margin-bottom: 15px;">Leave blank to use default values</p>';
+                    container.appendChild(optHeader);
+                    
+                    optionalVars.forEach(varName => {
+                        addVariableField(varName, false, examples, defaults);
+                    });
+                }
             }
         }
-        
+
+        function addVariableField(varName, isRequired, examples, defaults) {
+            const container = document.getElementById('variablesContainer');
+            const div = document.createElement('div');
+            div.className = 'form-group variable-input';
+            
+            let exampleText = examples[varName] || `e.g., Enter ${varName.replace('_', ' ')}`;
+            let defaultText = defaults[varName] ? ` (Default: ${defaults[varName]})` : '';
+            
+            let placeholderText = exampleText + defaultText;
+            
+            div.innerHTML = `
+                <label>
+                    ${formatVariableName(varName)}
+                    ${isRequired ? '<span class="required-star">*</span>' : '<span class="optional-label"> (optional)</span>'}
+                </label>
+                <${varName.includes('instructions') || varName === 'requirements' ? 'textarea' : 'input'} 
+                    type="text" 
+                    id="var_${varName}" 
+                    placeholder="${placeholderText}"
+                    ${isRequired ? 'required' : ''}>
+                </${varName.includes('instructions') || varName === 'requirements' ? 'textarea' : 'input'}>
+                <div class="field-description">${getFieldDescription(varName)}</div>
+            `;
+            container.appendChild(div);
+        }
+
         function getFieldDescription(varName) {
             const descriptions = {
                 'concept': 'What topic or idea do you want explained?',
                 'context': 'Who is the audience? What\'s the situation?',
                 'additional_instructions': 'Any special requirements or focus areas?',
                 'problem': 'Describe the problem that needs solving',
-                'constraints': 'Any limitations or requirements? (budget, time, resources)',
+                'constraints': 'Any limitations or requirements?',
                 'outcome': 'What should the final result look like?',
                 'task': 'What specific task needs to be accomplished?',
                 'language': 'Which programming language should be used?',
@@ -420,9 +464,12 @@
                 'topic': 'What subject should the content cover?',
                 'format': 'What format should the output take?',
                 'audience': 'Who will be reading this?',
-                'style_requirements': 'Any specific style preferences?'
+                'style_requirements': 'Any specific style preferences?',
+                'quantity': 'How many ideas to generate?',
+                'creativity_level': 'What creativity level? (low/moderate/high)',
+                'perspective': 'What perspectives to consider?'
             };
-            return descriptions[varName] || 'Required field for this template';
+            return descriptions[varName] || 'Enter value for this field';
         }
 
         function formatVariableName(name) {
@@ -441,7 +488,7 @@
                 return;
             }
             
-            // Collect variables from ALL variable inputs
+            // Collect variables
             const variables = {};
             const varInputs = document.querySelectorAll('[id^="var_"]');
             let hasError = false;
@@ -470,12 +517,6 @@
             
             if (hasError) {
                 alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
-                return;
-            }
-            
-            // Check if any variables were entered at all
-            if (Object.keys(variables).length === 0 && varInputs.length > 0) {
-                alert('Please enter at least one value for the variables');
                 return;
             }
             
@@ -548,14 +589,11 @@
         function copyPrompt() {
             if (currentPrompt) {
                 navigator.clipboard.writeText(currentPrompt).then(() => {
-                    // Show temporary success message
                     const copyBtn = document.querySelector('.copy-btn');
                     const originalText = copyBtn.textContent;
                     copyBtn.textContent = '✅ Copied!';
-                    copyBtn.style.background = '#28a745';
                     setTimeout(() => {
                         copyBtn.textContent = originalText;
-                        copyBtn.style.background = '#28a745';
                     }, 2000);
                 }).catch(() => {
                     alert('Failed to copy. Select and copy manually.');
